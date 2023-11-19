@@ -1,4 +1,6 @@
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ import javax.swing.JScrollPane;
  *
  * @author Programming
  */
-public class Notepad {
+public class Notepad implements ActionListener{
     
     JFrame frame;
     JTextArea textArea;
@@ -24,6 +26,7 @@ public class Notepad {
     JMenuBar menuBar;
     JMenu menuFile, menuEdit, menuFormat, menuColor;
     JMenuItem iNew ,iOpen, iSave, iSaveAs, iExit;
+    FileFunction fileFunction = new FileFunction(this);
     
     public static void main(String[] args) {
         
@@ -76,9 +79,13 @@ public class Notepad {
     public void createMenuFile(){
    
         iNew = new JMenuItem("New");
+        iNew.addActionListener(this);
+        iNew.setActionCommand("New");
         menuFile.add(iNew);
         
         iOpen = new JMenuItem("Open");
+        iOpen.addActionListener(this);
+        iOpen.setActionCommand("Open");
         menuFile.add(iOpen);
         
         iSave = new JMenuItem("Save");
@@ -89,5 +96,16 @@ public class Notepad {
         
         iExit = new JMenuItem("Exit");
         menuFile.add(iExit);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    
+        String command = e.getActionCommand();
+        
+        switch(command){
+            case "New" -> fileFunction.newFile();
+            case "Open" -> fileFunction.open();
+        }
     }
 }
