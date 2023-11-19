@@ -105,6 +105,7 @@ public class Notepad implements ActionListener{
             }
             
         });
+        textArea.addKeyListener(new KeyHandler(this));
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         frame.add(scrollPane);
