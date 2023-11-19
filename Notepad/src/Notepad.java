@@ -41,6 +41,9 @@ public class Notepad implements ActionListener{
     // Menu item Font Size
     JMenuItem iFont8,iFont12,iFont16,iFont20,iFont24,iFont28;
     
+    // Menu Color
+    JMenuItem iWhite, iBlack, iCream;
+    
     // Wrap set to off
     boolean wrap = false;
     
@@ -48,8 +51,11 @@ public class Notepad implements ActionListener{
     
     FormatFunction formatFunction = new FormatFunction(this);
     
+    ColorFunction colorFunction = new ColorFunction(this);
+    
     int fontSize = 16;
     String selectedFont = "Arial";
+    String defaultColor = "White";
     
     public static void main(String[] args) {
         
@@ -63,6 +69,10 @@ public class Notepad implements ActionListener{
         createMenu();
         createMenuFile();
         createMenuFormat();
+        createMenuColor();
+        
+        formatFunction.createFont(fontSize);
+        colorFunction.setColor(defaultColor);
         frame.setVisible(true);
     }
     
@@ -178,8 +188,24 @@ public class Notepad implements ActionListener{
         menuFontSize.add(iFont28);
         
         menuFormat.add(menuFontSize);
+    }
+    
+    public void createMenuColor(){
+        iWhite = new JMenuItem("White");
+        iWhite.addActionListener(this);
+        iWhite.setActionCommand("White");
+        menuColor.add(iWhite);
         
-        formatFunction.createFont(fontSize);
+        iBlack = new JMenuItem("Black");
+        iBlack.addActionListener(this);
+        iBlack.setActionCommand("Black");
+        menuColor.add(iBlack);
+        
+        iCream = new JMenuItem("Cream");
+        iCream.addActionListener(this);
+        iCream.setActionCommand("Cream");
+        menuColor.add(iCream);
+        
     }
 
     @Override
@@ -203,6 +229,9 @@ public class Notepad implements ActionListener{
             case "font20" -> formatFunction.createFont(fontSize = 20);
             case "font24" -> formatFunction.createFont(fontSize = 24);
             case "font28" -> formatFunction.createFont(fontSize = 28);
+            case "White" -> colorFunction.setColor(command);
+            case "Black" -> colorFunction.setColor(command);
+            case "Cream" -> colorFunction.setColor(command);
         }
     }
 }
