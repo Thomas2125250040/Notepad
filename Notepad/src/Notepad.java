@@ -8,6 +8,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.UndoManager;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -44,6 +47,9 @@ public class Notepad implements ActionListener{
     // Menu Color
     JMenuItem iWhite, iBlack, iCream;
     
+    // Menu Edit
+    JMenuItem iUndo, iRedo;
+    
     // Wrap set to off
     boolean wrap = false;
     
@@ -52,6 +58,10 @@ public class Notepad implements ActionListener{
     FormatFunction formatFunction = new FormatFunction(this);
     
     ColorFunction colorFunction = new ColorFunction(this);
+    
+    EditFunction editFunction = new EditFunction(this);
+    
+    UndoManager um =  new UndoManager();
     
     int fontSize = 16;
     String selectedFont = "Arial";
@@ -70,6 +80,7 @@ public class Notepad implements ActionListener{
         createMenuFile();
         createMenuFormat();
         createMenuColor();
+        createMenuEdit();
         
         formatFunction.createFont(fontSize);
         colorFunction.setColor(defaultColor);
@@ -87,6 +98,13 @@ public class Notepad implements ActionListener{
     public void createTextArea(){
         
         textArea = new JTextArea();
+        textArea.getDocument().addUndoableEditListener(new UndoableEditListener(){
+            @Override
+            public void undoableEditHappened(UndoableEditEvent e) {
+                um.addEdit(e.getEdit());
+            }
+            
+        });
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         frame.add(scrollPane);
@@ -207,6 +225,19 @@ public class Notepad implements ActionListener{
         menuColor.add(iCream);
         
     }
+    
+    public void createMenuEdit(){
+        
+        iUndo = new JMenuItem("Undo");
+        iUndo.addActionListener(this);
+        iUndo.setActionCommand("Undo");
+        iRedo = new JMenuItem("Redo");
+        iRedo.addActionListener(this);
+        iRedo.setActionCommand("Redo");
+        
+        menuEdit.add(iUndo);
+        menuEdit.add(iRedo);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -232,6 +263,8 @@ public class Notepad implements ActionListener{
             case "White" -> colorFunction.setColor(command);
             case "Black" -> colorFunction.setColor(command);
             case "Cream" -> colorFunction.setColor(command);
+            case "Undo" -> editFunction.undo();
+            case "Redo" -> editFunction.redo();
         }
     }
 }
