@@ -19,9 +19,13 @@ public class Notepad {
     JScrollPane scrollPane;
     
     public static void main(String[] args) {
-        Notepad notepad = new Notepad();
-        notepad.createWindow();
-        notepad.createTextArea();
+        new Notepad();
+    }
+    
+    public Notepad(){
+        createWindow();
+        createTextArea();
+        frame.setVisible(true);
     }
     
     public void createWindow(){
