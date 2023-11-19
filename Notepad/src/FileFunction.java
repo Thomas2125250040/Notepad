@@ -2,6 +2,8 @@
 import java.awt.FileDialog;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -27,6 +29,8 @@ public class FileFunction {
         
         notepad.textArea.setText("");
         notepad.frame.setTitle("New");
+        fileName = null;
+        fileAddress = null;
     }
     
     public void open(){
@@ -52,7 +56,43 @@ public class FileFunction {
                 System.out.println("FILE CANNNOT BE OPENED!");
             }
         }
-       
-     
+    }
+    
+    public void saveAs(){
+        
+        FileDialog fd = new FileDialog(notepad.frame, "Save", FileDialog.SAVE);
+        fd.setVisible(true);
+        
+        if (fd.getFile() != null){
+            fileName = fd.getFile();
+            fileAddress = fd.getDirectory();
+            
+            try{
+                FileWriter fw = new FileWriter(fileAddress + fileName);
+                fw.write(notepad.textArea.getText());
+                fw.close();
+            } catch (IOException e){
+                System.out.println("An error occured! : " + e.getMessage());
+            }
+        }
+    }
+    
+    public void save(){
+        
+        if (fileName != null){
+            try{
+                FileWriter fw = new FileWriter(fileAddress + fileName);
+                fw.write(notepad.textArea.getText());
+                fw.close();
+            } catch (IOException e){
+                System.out.println("An error occured! : " + e.getMessage());
+            }
+        } else {
+            saveAs();
+        }
+    }
+    
+    public void exit(){
+        System.exit(0);
     }
 }
